@@ -1,0 +1,21 @@
+{
+    "name": "hclabs/model-manager-bundle",
+    "type": "symfony-bundle",
+    "description": "HCLabs Model Manager Bundle",
+    "keywords": ["Model", "Manager", "Model Manager", "Entity"],
+    "homepage": "https://github.com/jrdnhannah/ModelManager",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "jrdn hannah",
+            "email": "jrdn@jrdnhannah.co.uk",
+            "homepage": "//jrdnhannah.co.uk"
+        }
+    ],
+    "require": {
+        "symfony/symfony": ">=2.4",
+        "doctrine/orm": "~2.2,>=2.2.3",
+        "doctrine/doctrine-bundle": "~1.2"
+    }
+
+}
