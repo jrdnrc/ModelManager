@@ -2,6 +2,7 @@
 
 <phpunit colors="true"
          stopOnFailure="false"
+         bootstrap="Tests/Bootstrap/bootstrap.php"
          >
     <testsuites>
         <testsuite name="AdminBundle Test Suite">
