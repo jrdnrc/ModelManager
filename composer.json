@@ -16,6 +16,11 @@
         "symfony/symfony": ">=2.4",
         "doctrine/orm": "~2.2,>=2.2.3",
         "doctrine/doctrine-bundle": "~1.2"
+    },
+    "autoload": {
+        "psr-4": {
+            "HCLabs\\ModelManagerBundle\\": ""
+        }
     }
 
 }
