@@ -10,6 +10,14 @@ A simple model manager.
 Usage:
 ======
 
+Add to your `composer.json` file:
+
+    "require": {
+        // ...
+
+        "hclabs/model-manager-bundle": "1.0.0-RC2"
+    }
+&nbsp;
 
 	# src/Acme/AcmeDemoBundle/Resources/config/services.yml
 
