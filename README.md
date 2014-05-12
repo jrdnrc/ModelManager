@@ -15,10 +15,9 @@ Add to your `composer.json` file:
     "require": {
         // ...
 
-        "hclabs/model-manager-bundle": "dev-master"
+        "hclabs/model-manager-bundle": "1.0.0-RC2"
     }
-
-Service Definitions:
+&nbsp;
 
 	# src/Acme/AcmeDemoBundle/Resources/config/services.yml
 
@@ -39,52 +38,12 @@ Service Definitions:
 	        calls:
 	            - [setTestModelManager, ["@acme.demo_model_manager"]]
 
-Example Entity:
 
-    <?php
-    // src/Acme/AcmeDemoBundle/Entity/TestEntity
+&nbsp;
 
-    class TestEntity
-    {
-        /**
-         * @var string
-         */
-        private $name;
-
-        /**
-         * @var bool
-         */
-        private $enabled;
-
-        /**
-         * Set name
-         *
-         * @param string $name
-         */
-        public function setName($name)
-        {
-            $this->name = $name;
-        }
-
-        /**
-         * Set enabled
-         *
-         * @param bool $enabled
-         */
-        public function setEnabled($enabled)
-        {
-            $this->enabled = $enabled;
-        }
-
-        // ... getters
-    }
-
-Example Controller:
-
-    <?php
 	// src/Acme/AcmeDemoBundle/Controller/DemoController.php
 
-	use HCLabs\ModelManagerBundle\Model\Contract\ModelManagerInterface;
+	use HCLabs\ModelManagerBundle\Model\Contract\ModelManagerInterface
 
 	class DemoController
 	{
@@ -92,21 +51,17 @@ Example Controller:
     
 		public function indexAction()
     	{
-    	    /** @var string[] $criteria */
-    	    $criteria = ['name' => 'test'];
-
         	try {
-	        	$entity = $this->manager->findOrFail($criteria);
+	        	$entity = $this->manager->findOrFail(array('name' => 'test'));
 		    }
 		    catch(EntityNotFoundException $e) {
-		        $entity = $this->manager->create($criteria);
+		        $entity = $this->manager->create();
+		        $entity->setName('test');
 		    }
 	    
 		    $entity->setEnabled(1);
 	    
-		    $this->manager->persist($entity)->flush();
-
-		    // some other stuff....
+		    $this->manager->persist($entity)->flush();	    
 	    
 	    }
 
