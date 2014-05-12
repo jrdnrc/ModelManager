@@ -11,6 +11,7 @@ interface ModelManagerInterface extends ModelOperationsInterface, ModelRepositor
      *
      * @param EntityManagerInterface $em
      * @param string                 $modelClass
+     * @throws \HCLabs\ModelManagerBundle\Exception\BadImplementationException
      */
     public function __construct(EntityManagerInterface $em, $modelClass);
 }

@@ -37,6 +37,30 @@ class ModelManagerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers \HCLabs\ModelManagerBundle\Model\ModelManager::create
+     */
+    public function testCreateWithData()
+    {
+        /** @var \HCLabs\ModelManagerBundle\Tests\TestEntity $entity */
+        $entity = new $this->entity();
+
+        $entity->setName('test');
+
+        $createdEntity = $this->manager->create(['name' => 'test']);
+
+        $this->assertEquals($entity, $createdEntity);
+    }
+
+    /**
+     * @covers \HCLabs\ModelManagerBundle\Model\ModelManager::create
+     * @expectedException \HCLabs\ModelManagerBundle\Exception\MethodNotFoundException
+     */
+    public function testCreateWithBadDataThrowsException()
+    {
+        $this->manager->create(['lol' => 'test']);
+    }
+
+    /**
      * @covers \HCLabs\ModelManagerBundle\Model\ModelManager::persist
      */
     public function testPersist()

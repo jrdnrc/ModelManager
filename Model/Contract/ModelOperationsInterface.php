@@ -7,9 +7,11 @@ interface ModelOperationsInterface
     /**
      * Create a model instance
      *
+     * @param  array $data
+     * @throws \HCLabs\ModelManagerBundle\Exception\MethodNotFoundException
      * @return ModelInterface
      */
-    public function create();
+    public function create(array $data = array());
 
     /**
      * Remove model from database

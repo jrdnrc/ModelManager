@@ -4,12 +4,13 @@ namespace HCLabs\ModelManagerBundle\Model;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityNotFoundException;
+use HCLabs\ModelManagerBundle\Exception\BadImplementationException;
+use HCLabs\ModelManagerBundle\Exception\MethodNotFoundException;
 use HCLabs\ModelManagerBundle\Model\Contract\ModelInterface;
 use HCLabs\ModelManagerBundle\Model\Contract\ModelManagerInterface;
 
 class ModelManager implements ModelManagerInterface
 {
-
     /**
      * @var EntityManagerInterface
      */
@@ -27,6 +28,12 @@ class ModelManager implements ModelManagerInterface
      */
     public function __construct(EntityManagerInterface $em, $modelClass)
     {
+        $modelInterface = '\\HCLabs\\ModelManagerBundle\\Model\\Contract\\ModelInterface';
+
+        if(!is_a($modelClass, $modelInterface, true)) {
+            throw new BadImplementationException($modelInterface, $modelClass);
+        }
+
         $this->em    = $em;
         $this->model = $modelClass;
     }
@@ -34,9 +41,29 @@ class ModelManager implements ModelManagerInterface
     /**
      * {@inheritdoc}
      */
-    public function create()
+    public function create(array $data = array())
     {
-        return new $this->model();
+        $model = new $this->model();
+
+        if(empty($data)) {
+            return $model;
+        }
+
+        $setFormat = 'set%s';
+
+        foreach($data as $attr => $value) {
+            $attr      = ucfirst($attr);
+            $setMethod = sprintf($setFormat, $attr);
+
+            if(method_exists($model, $setMethod)) {
+                $model->$setMethod($value);
+            }
+            else {
+                throw new MethodNotFoundException($setMethod, $model);
+            }
+        }
+
+        return $model;
     }
 
     /**
@@ -82,7 +109,9 @@ class ModelManager implements ModelManagerInterface
     {
         $entity = $this->repository()->findOneBy($criteria);
 
-        if(is_null($entity)) throw new EntityNotFoundException;
+        if(is_null($entity)) {
+            throw new EntityNotFoundException;
+        }
 
         return $entity;
     }
@@ -94,5 +123,4 @@ class ModelManager implements ModelManagerInterface
     {
         return $this->repository()->findBy($criteria);
     }
-
 }
