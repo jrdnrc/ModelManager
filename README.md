@@ -15,7 +15,7 @@ Add to your `composer.json` file:
     "require": {
         // ...
 
-        "hclabs/model-manager-bundle": "1.0.0-RC2"
+        "hclabs/model-manager-bundle": "dev-master"
     }
 &nbsp;
 
@@ -41,9 +41,50 @@ Add to your `composer.json` file:
 
 &nbsp;
 
+    <?php
+    // src/Acme/AcmeDemoBundle/Entity/TestEntity
+
+    class TestEntity
+    {
+        /**
+         * @var string
+         */
+        private $name;
+
+        /**
+         * @var bool
+         */
+        private $enabled;
+
+        /**
+         * Set name
+         *
+         * @param string $name
+         */
+        public function setName($name)
+        {
+            $this->name = $name;
+        }
+
+        /**
+         * Set enabled
+         *
+         * @param bool $enabled
+         */
+        public function setEnabled($enabled)
+        {
+            $this->enabled = $enabled;
+        }
+
+        // ... getters
+    }
+
+&nbsp;
+
+    <?php
 	// src/Acme/AcmeDemoBundle/Controller/DemoController.php
 
-	use HCLabs\ModelManagerBundle\Model\Contract\ModelManagerInterface
+	use HCLabs\ModelManagerBundle\Model\Contract\ModelManagerInterface;
 
 	class DemoController
 	{
@@ -51,17 +92,21 @@ Add to your `composer.json` file:
     
 		public function indexAction()
     	{
+    	    /** @var string[] $criteria */
+    	    $criteria = ['name' => 'test'];
+
         	try {
-	        	$entity = $this->manager->findOrFail(array('name' => 'test'));
+	        	$entity = $this->manager->findOrFail($criteria);
 		    }
 		    catch(EntityNotFoundException $e) {
-		        $entity = $this->manager->create();
-		        $entity->setName('test');
+		        $entity = $this->manager->create($criteria);
 		    }
 	    
 		    $entity->setEnabled(1);
 	    
-		    $this->manager->persist($entity)->flush();	    
+		    $this->manager->persist($entity)->flush();
+
+		    // some other stuff....
 	    
 	    }
 
