@@ -18,7 +18,7 @@ class ModelManagerCompilerPass implements CompilerPassInterface
         foreach($modelManagerList as $id => $attributes)
         {
             $definition = $container->getDefinition($id);
-            $definition->addArgument(new Reference('doctrine.orm.entity_manager'));
+            $definition->addArgument(new Reference('doctrine'));
             $definition->addArgument($attributes[0]['entity']);
         }
     }
