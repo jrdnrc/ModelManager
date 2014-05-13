@@ -13,6 +13,9 @@ class ModelManagerTest extends \PHPUnit_Framework_TestCase
     protected $em;
 
     /** @var \PHPUnit_Framework_MockObject_MockObject */
+    protected $registry;
+
+    /** @var \PHPUnit_Framework_MockObject_MockObject */
     protected $repository;
 
     /** @var ModelManager */
@@ -21,9 +24,10 @@ class ModelManagerTest extends \PHPUnit_Framework_TestCase
     public function setUp()
     {
         $this->entity     = "\\HCLabs\\ModelManagerBundle\\Tests\\TestEntity";
-        $this->em         = $this->getMockBuilder("Doctrine\\ORM\\EntityManagerInterface")->disableOriginalConstructor()->getMockForAbstractClass();
+        $this->registry   = $this->getMockBuilder("Doctrine\\Bundle\\DoctrineBundle\\Registry")->disableOriginalConstructor()->getMock();
         $this->repository = $this->getMockBuilder("Doctrine\\ORM\\EntityRepository")->disableOriginalConstructor()->getMock();
-        $this->manager    = new ModelManager($this->em, $this->entity);
+        $this->em         = $this->getMockBuilder("Doctrine\\ORM\\EntityManagerInterface")->disableOriginalConstructor()->getMockForAbstractClass();
+        $this->manager    = new ModelManager($this->registry, $this->entity);
     }
 
     /**
@@ -65,6 +69,8 @@ class ModelManagerTest extends \PHPUnit_Framework_TestCase
      */
     public function testPersist()
     {
+        $this->provideManager($this->entity);
+
         $entity = $this->manager->create();
 
         $this->em->expects($this->once())
@@ -81,6 +87,8 @@ class ModelManagerTest extends \PHPUnit_Framework_TestCase
      */
     public function testRemove()
     {
+        $this->provideManager($this->entity);
+
         $entity = $this->manager->create();
 
         $this->em->expects($this->once())
@@ -97,6 +105,8 @@ class ModelManagerTest extends \PHPUnit_Framework_TestCase
      */
     public function testFlush()
     {
+        $this->provideManager($this->entity);
+
         $this->em->expects($this->once())
                  ->method('flush');
 
@@ -108,6 +118,7 @@ class ModelManagerTest extends \PHPUnit_Framework_TestCase
      */
     public function testRepository()
     {
+        $this->provideManager($this->entity);
         $this->provideRepository();
 
         $result = $this->manager->repository();
@@ -120,6 +131,7 @@ class ModelManagerTest extends \PHPUnit_Framework_TestCase
      */
     public function testFindOrFail()
     {
+        $this->provideManager($this->entity);
         $this->provideRepository();
 
         $entity = $this->manager->create();
@@ -140,6 +152,7 @@ class ModelManagerTest extends \PHPUnit_Framework_TestCase
      */
     public function testFindOrFailThrowsEntityNotFoundException()
     {
+        $this->provideManager($this->entity);
         $this->provideRepository();
 
         $this->repository->expects($this->once())
@@ -155,6 +168,8 @@ class ModelManagerTest extends \PHPUnit_Framework_TestCase
      */
     public function testFind()
     {
+        $this->provideManager($this->entity);
+
         $entity1 = $this->manager->create();
         $entity2 = $this->manager->create();
 
@@ -179,5 +194,17 @@ class ModelManagerTest extends \PHPUnit_Framework_TestCase
                  ->method('getRepository')
                  ->with($this->entity)
                  ->willReturn($this->repository);
+    }
+
+    /**
+     * @param  string $modelClass
+     * @return void
+     */
+    protected function provideManager($modelClass)
+    {
+        $this->registry->expects($this->once())
+                       ->method('getManagerForClass')
+                       ->with($modelClass)
+                       ->willReturn($this->em);
     }
 }

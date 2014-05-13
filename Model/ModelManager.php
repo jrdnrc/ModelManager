@@ -2,7 +2,7 @@
 
 namespace HCLabs\ModelManagerBundle\Model;
 
-use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\Bundle\DoctrineBundle\Registry;
 use Doctrine\ORM\EntityNotFoundException;
 use HCLabs\ModelManagerBundle\Exception\BadImplementationException;
 use HCLabs\ModelManagerBundle\Exception\MethodNotFoundException;
@@ -12,9 +12,9 @@ use HCLabs\ModelManagerBundle\Model\Contract\ModelManagerInterface;
 class ModelManager implements ModelManagerInterface
 {
     /**
-     * @var EntityManagerInterface
+     * @var Registry
      */
-    protected $em;
+    protected $registry;
 
     /**
      * The entity class name
@@ -26,7 +26,7 @@ class ModelManager implements ModelManagerInterface
     /**
      * {@inheritdoc}
      */
-    public function __construct(EntityManagerInterface $em, $modelClass)
+    public function __construct(Registry $registry, $modelClass)
     {
         $modelInterface = '\\HCLabs\\ModelManagerBundle\\Model\\Contract\\ModelInterface';
 
@@ -34,8 +34,8 @@ class ModelManager implements ModelManagerInterface
             throw new BadImplementationException($modelInterface, $modelClass);
         }
 
-        $this->em    = $em;
-        $this->model = $modelClass;
+        $this->registry = $registry;
+        $this->model    = $modelClass;
     }
 
     /**
@@ -71,7 +71,7 @@ class ModelManager implements ModelManagerInterface
      */
     public function remove(ModelInterface $model)
     {
-        $this->em->remove($model);
+        $this->registry->getManagerForClass($this->model)->remove($model);
 
         return $this;
     }
@@ -81,7 +81,7 @@ class ModelManager implements ModelManagerInterface
      */
     public function persist(ModelInterface $model)
     {
-        $this->em->persist($model);
+        $this->registry->getManagerForClass($this->model)->persist($model);
 
         return $this;
     }
@@ -91,7 +91,7 @@ class ModelManager implements ModelManagerInterface
      */
     public function flush()
     {
-        $this->em->flush();
+        $this->registry->getManagerForClass($this->model)->flush();
     }
 
     /**
@@ -99,7 +99,7 @@ class ModelManager implements ModelManagerInterface
      */
     public function repository()
     {
-        return $this->em->getRepository($this->model);
+        return $this->registry->getManagerForClass($this->model)->getRepository($this->model);
     }
 
     /**

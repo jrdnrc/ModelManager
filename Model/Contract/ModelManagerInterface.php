@@ -2,16 +2,16 @@
 
 namespace HCLabs\ModelManagerBundle\Model\Contract;
 
-use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\Bundle\DoctrineBundle\Registry;
 
 interface ModelManagerInterface extends ModelOperationsInterface, ModelRepositoryInterface
 {
     /**
      * ModelManager constructor
      *
-     * @param EntityManagerInterface $em
-     * @param string                 $modelClass
+     * @param Registry $registry
+     * @param string   $modelClass
      * @throws \HCLabs\ModelManagerBundle\Exception\BadImplementationException
      */
-    public function __construct(EntityManagerInterface $em, $modelClass);
+    public function __construct(Registry $registry, $modelClass);
 }
