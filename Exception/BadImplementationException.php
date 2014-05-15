@@ -10,7 +10,7 @@ class BadImplementationException extends \Exception
      */
     public function __construct($interface, $class)
     {
-        $message = sprintf("Class '%s' does not implement '%s', and cannot be managed by this model manager.");
+        $message = sprintf("Class '%s' does not implement '%s', and cannot be managed by this model manager.", $class, $interface);
         parent::__construct($message);
     }
 }
