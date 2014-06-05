@@ -14,12 +14,14 @@ class ModelManagerCompilerPass implements CompilerPassInterface
     public function process(ContainerBuilder $container)
     {
         $modelManagerList = $container->findTaggedServiceIds('hclabs.model_manager');
+        $modelManagerPool = $container->findDefinition('model_manager.pool');
 
-        foreach($modelManagerList as $id => $attributes)
-        {
+        foreach($modelManagerList as $id => $attributes) {
             $definition = $container->getDefinition($id);
             $definition->addArgument(new Reference('doctrine'));
             $definition->addArgument($attributes[0]['entity']);
+
+            $modelManagerPool->addMethodCall('addManager', [new Reference($id)]);
         }
     }
 
