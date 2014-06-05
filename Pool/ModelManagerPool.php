@@ -9,7 +9,7 @@ use HCLabs\ModelManagerBundle\Model\Contract\ModelManagerInterface;
 class ModelManagerPool
 {
     /** @var ModelManagerInterface[] */
-    protected $managers;
+    protected $managers = [];
 
     /**
      * Add a model manager to the pool
