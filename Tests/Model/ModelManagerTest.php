@@ -3,6 +3,7 @@
 namespace HCLabs\ModelManagerBundle\Tests;
 
 use HCLabs\ModelManagerBundle\Model\ModelManager;
+use HCLabs\ModelManagerBundle\Tests\TestNonManagedEntity;
 
 class ModelManagerTest extends \PHPUnit_Framework_TestCase
 {
@@ -183,6 +184,20 @@ class ModelManagerTest extends \PHPUnit_Framework_TestCase
         $result = $this->manager->find(array());
 
         $this->assertEquals([$entity1, $entity2], $result);
+    }
+
+    /**
+     * @covers \HCLabs\ModelManagerBundle\Model\ModelManager::supports
+     */
+    public function testSupports()
+    {
+        $entity = new $this->entity;
+        $badEntityClass = new TestNonManagedEntity;
+        $badEntity = new $badEntityClass;
+        $this->assertTrue($this->manager->supports($this->entity));
+        $this->assertTrue($this->manager->supports($entity));
+        $this->assertFalse($this->manager->supports($badEntity));
+        $this->assertFalse($this->manager->supports($badEntityClass));
     }
 
     /**
