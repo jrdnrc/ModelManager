@@ -1,0 +1,6 @@
+parameters:
+    model_manager.pool.class: "HCLabs\\ModelManagerBundle\\Pool\\ModelManagerPool"
+
+services:
+    model_manager.pool:
+        class: "%model_manager.pool.class%"
