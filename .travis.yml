@@ -1,12 +1,21 @@
+env:
+    - SYMFONY_VERSION="2.3.*" SENSIO_FEB_VERSION="2.3.*" SENSIO_DIST_VERSION="2.3.*"
+    - SYMFONY_VERSION="2.4.*" SENSIO_FEB_VERSION="~3.0" SENSIO_DIST_VERSION="~2.3"
+    - SYMFONY_VERSION="2.5.*" SENSIO_FEB_VERSION="~3.0" SENSIO_DIST_VERSION="3.0.*@dev"
+
 language: php
 php:
     - 5.5
     - 5.4
     - hhvm
-env:
-  - SYMFONY_VERSION=2.3.*
-  - SYMFONY_VERSION=2.4.*
 
-before_script:
-  - composer require symfony/symfony:${SYMFONY_VERSION} --no-update
-  - composer install --dev --prefer-source
+matrix:
+    allow_failures:
+        - php: hhvm
+        - env: SYMFONY_VERSION="2.5.*" SENSIO_FEB_VERSION="~3.0" SENSIO_DIST_VERSION="3.0.*@dev"
+
+install:
+    - composer require symfony/framework-bundle:${SYMFONY_VERSION} --no-update
+    - composer require sensio/framework-extra-bundle:${SENSIO_FEB_VERSION} --no-update
+    - composer require sensio/distribution-bundle:${SENSIO_DIST_VERSION} --no-update
+    - composer update
