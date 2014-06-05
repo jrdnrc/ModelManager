@@ -143,7 +143,9 @@ You can make use of the admin pool to get a manager for any managed entity. E.g.
             $form->handleRequest($request);
             
             if ($form->isValid()) {
-            	$manager = $this->pool->getManager($form->getData());
+                $user = $form->getData();
+
+            	$manager = $this->pool->getManager($user);
             	
             	$manager->persist($user)->flush();
             	
