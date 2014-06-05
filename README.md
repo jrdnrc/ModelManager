@@ -115,3 +115,54 @@ Example Controller:
 			$this->manager = $modelManager;
 		}
 	}
+
+New:
+====
+
+The admin pool:
+
+You can make use of the admin pool to get a manager for any managed entity. E.g.:
+
+    <?php
+    // src/Acme/AcmeDemoBundle/Controller/DemoController.php
+    
+    use Symfony\Component\HttpFoundation\Request;
+    use HCLabs\ModelManagerBundle\Pool\ModelManagerPool;
+    
+    class DemoController
+    {
+        protected $pool;
+        
+        protected $formFactory;
+        
+        protected $twig;
+        
+        public function updateUserAction(Request $request)
+        {
+            $form = $this->formFactory->create('my_form_type');
+            $form->handleRequest($request);
+            
+            if ($form->isValid()) {
+            	$manager = $this->pool->getManager($form->getData());
+            	
+            	$manager->persist($user)->flush();
+            	
+            	return $this->twig->render(
+            		'AcmeDemoBundle:Demo:update-success.html.twig',
+            		['user' => $user]
+            	);
+            }
+            
+            return $this->twig->render(
+            	'AcmeDemoBundle:Demo:edit.html.twig',
+            	['form' => $form]
+            );
+        }
+               
+        public function setModelManagerPool(ModelManagerPool $pool)
+        {
+            $this->pool = $pool;
+        }
+        
+        // Other service setters ...
+    }
