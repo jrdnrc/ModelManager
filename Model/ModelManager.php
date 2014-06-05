@@ -123,4 +123,12 @@ class ModelManager implements ModelManagerInterface
     {
         return $this->repository()->findBy($criteria);
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function supports($class)
+    {
+        return is_a($class, $this->model, true);
+    }
 }

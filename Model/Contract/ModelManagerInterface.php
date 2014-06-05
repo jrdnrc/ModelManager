@@ -14,4 +14,12 @@ interface ModelManagerInterface extends ModelOperationsInterface, ModelRepositor
      * @throws \HCLabs\ModelManagerBundle\Exception\BadImplementationException
      */
     public function __construct(Registry $registry, $modelClass);
+
+    /**
+     * What class the manager works with
+     *
+     * @param  mixed $class
+     * @return bool
+     */
+    public function supports($class);
 }
