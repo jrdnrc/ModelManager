@@ -30,7 +30,7 @@ class ModelManager implements ModelManagerInterface
     {
         $modelInterface = '\\HCLabs\\ModelManagerBundle\\Model\\Contract\\ModelInterface';
 
-        if(!is_a($modelClass, $modelInterface, true)) {
+        if (!is_a($modelClass, $modelInterface, true)) {
             throw new BadImplementationException($modelInterface, $modelClass);
         }
 
@@ -89,9 +89,9 @@ class ModelManager implements ModelManagerInterface
     /**
      * {@inheritdoc}
      */
-    public function flush()
+    public function flush(ModelInterface $model = null)
     {
-        $this->registry->getManagerForClass($this->model)->flush();
+        $this->registry->getManagerForClass($this->model)->flush($model);
     }
 
     /**

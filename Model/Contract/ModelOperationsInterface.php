@@ -32,7 +32,8 @@ interface ModelOperationsInterface
     /**
      * Flush entity manager
      *
+     * @param  ModelInterface|null $model
      * @return mixed
      */
-    public function flush();
+    public function flush(ModelInterface $model = null);
 }
