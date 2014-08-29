@@ -24,12 +24,17 @@ class ModelManagerPool
     /**
      * Get manager for an entity out of the pool
      *
-     * @param ModelInterface $model
+     * @param ModelInterface|string $model
      * @return ModelManagerInterface
      * @throws \HCLabs\ModelManagerBundle\Exception\ModelManagerNotFoundException
+     * @throws \RuntimeException
      */
-    public function getManager(ModelInterface $model)
+    public function getManager($model)
     {
+        if (!is_string($model) && !$model instanceof ModelInterface) {
+            throw new \RuntimeException(sprintf('Model provided (\'%s\') is neither a string nor an instance of ModelInterface', $model));
+        }
+
         foreach ($this->managers as $manager) {
             if ($manager->supports($model)) {
                 return $manager;
