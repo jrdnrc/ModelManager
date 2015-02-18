@@ -9,6 +9,12 @@ use HCLabs\ModelManagerBundle\Exception\MethodNotFoundException;
 use HCLabs\ModelManagerBundle\Model\Contract\ModelInterface;
 use HCLabs\ModelManagerBundle\Model\Contract\ModelManagerInterface;
 
+/**
+ * Class ModelManager
+ *
+ * @author jrdn hannah <jrdn@jrdnhannah.co.uk>
+ * @deprecated
+ */
 class ModelManager implements ModelManagerInterface
 {
     /**

@@ -6,6 +6,15 @@ use HCLabs\ModelManagerBundle\DependencyInjection\CompilerPass\ModelManagerCompi
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
+/**
+ * Class HCLabsModelManagerBundle
+ *
+ * @author jrdn hannah <jrdn@jrdnhannah.co.uk>
+ * @deprecated
+ *
+ * I would recommend using the repository pattern over this model
+ * management bundle.
+ */
 class HCLabsModelManagerBundle extends Bundle
 {
     public function build(ContainerBuilder $container)
